@@ -1,0 +1,58 @@
+PK = PrimaryKey
+FK = ForeignKey
+
+---- Software Houses ----
+Id -> UniqueID|PK
+Nome -> varchar 50
+Partita IVA -> varchar 11
+Nazione -> varchar 20
+Città -> varchar 60
+-----------------------------
+---- Videogames ---------
+Id -> UniqueID
+Nome -> varchar 50
+Trama -> Text                                    ----- Videogame_Piattaforma ------------
+Data di Rilascio -> date                             Videogame_id -> FK
+Software_Houses -> FK                                Piattaforma_id -> FK
+-----------------------------                    -----------------------------------------------
+---- Piattaforme ---------- 
+Id -> UniqueID|PK                      	         ----- Videogame_Categorie ---------------
+nome -> varchar 25                                   Videogame_id -> FK
+-----------------------------                        Categorie_id -> FK
+---- Categorie -------------                     -----------------------------------------------
+Id -> UniqueID|PK                                 
+nome -> varchar 25                                ----- Videogame_Calassificazione -------
+-----------------------------                        Videogame_id -> FK
+---- Calassificazione -----                          Calassificazione_id -> FK   
+Id -> UniqueID|PK                                 ------------------------------------------------                      
+nome -> varchar 25                                
+------------------------------
+---- Tornei -----------------
+Id -> UniqueID|PK
+Nome -> varchar 50
+Città -> varchar 60
+Anno -> Year
+Videogames_id -> FK
+------------------------------                     
+---- Videogiocatori -------                    ----- Tornei_Videogiocatori -----------
+Id -> UniqueID|PK                    	          Torneo_id -> FK
+Nome -> varchar 25                                Videogiocatori_id ->FK
+Cognome -> varchar 25                         --------------------------------------------
+Nickname -> varchar 30
+Città -> varchar 60
+-----------------------------
+---- Recensioni -----------
+Id -> UniqueID|PK  
+Titolo -> varchar 40
+Testo -> text
+Rating -> tinyint 5
+Videogiocatore_id -> FK
+-----------------------------
+---- Premio ---------------
+Id -> UniqueID|PK   
+nome -> varchar 25
+-----------------------------
+----- Premio_Videogames -----------
+Premio_id -> FK
+Videogames_id -> FK
+---------------------------------
