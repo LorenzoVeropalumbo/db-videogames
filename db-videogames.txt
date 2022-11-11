@@ -45,7 +45,7 @@ Città -> varchar 60
 Id -> UniqueID|PK  
 Titolo -> varchar 40
 Testo -> text
-Rating -> tinyint 5
+Rating -> float(2,1)
 Videogiocatore_id -> FK
 -----------------------------
 ---- Premio ---------------
