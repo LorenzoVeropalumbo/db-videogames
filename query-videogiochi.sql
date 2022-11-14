@@ -131,8 +131,16 @@ INNER JOIN software_houses on software_house_id = software_houses.id;
 
 
 --6- Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
-select *
-from videogames;
+SELECT videogames.name AS videogame_name, categories.name AS category, pegi_labels.name AS pegi_label
+FROM videogames
+INNER JOIN category_videogame ON videogames.id = category_videogame.videogame_id
+INNER JOIN categories ON category_videogame.category_id = categories.id
+INNER JOIN pegi_label_videogame ON videogames.id = pegi_label_videogame.videogame_id
+INNER JOIN pegi_labels ON pegi_label_videogame.pegi_label_id = pegi_labels.id
+INNER JOIN reviews ON videogames.id = reviews.videogame_id
+WHERE reviews.rating = 4 OR reviews.rating = 5
+GROUP BY videogames.name, categories.name, pegi_labels.name
+ORDER BY videogames.name
 
 --7- Selezionare quali giochi erano presenti nei tornei nei quali hanno partecipato i giocatori il cui nome inizia per 'S' (474)
 select distinct videogames.id, videogames.name
