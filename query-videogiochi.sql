@@ -152,22 +152,29 @@ INNER JOIN awards on awards.id = award_videogame.award_id
 where awards.name = 'Gioco dell''anno' and award_videogame.year = 2018
 
 --9- Selezionare i giocatori che hanno giocato al gioco più atteso del 2018 in un torneo del 2019 (3306)
-Select players.name, players.lastname
-from players
-INNER JOIN player_tournament on player_id = player_tournament.player_id
-INNER JOIN tournaments on player_tournament.tournament_id = tournaments.id
-INNER JOIN tournament_videogame on tournament_videogame.tournament_id = tournaments.id
-INNER JOIN videogames on tournament_videogame.videogame_id = videogames.id
-INNER JOIN award_videogame on videogames.id = award_videogame.videogame_id
-INNER JOIN awards on award_id = awards.id
-where tournaments.[year] = 2019 and award_videogame.[year] = 2018 and awards.[name] = 'Gioco più atteso';
-
+SELECT p.id AS player_id, p.name AS player_name, p.lastname AS player_lastname, p.nickname AS player_nickname, p.city AS player_city
+FROM players p
+INNER JOIN player_tournament pt ON p.id = pt.player_id
+INNER JOIN tournaments t ON pt.tournament_id = t.id
+INNER JOIN tournament_videogame tv ON t.id = tv.tournament_id
+INNER JOIN videogames v ON tv.videogame_id = v.id
+INNER JOIN award_videogame av ON v.id = av.videogame_id
+INNER JOIN awards a ON av.award_id = a.id
+WHERE a.name = 'Gioco più atteso' AND av.year = 2018 AND t.year = 2019
 
 --*********** BONUS ***********
 
 --10- Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
+select TOP 1 software_houses.id, software_houses.name, software_houses.city, videogames.id, videogames.name, videogames.release_date
+from software_houses
+join videogames on software_house_id = software_houses.id
+ORDER BY videogames.release_date;
 
 --11- Selezionare i dati del videogame (id, name, release_date, totale recensioni) con più recensioni (videogame id : 398)
+select TOP 1 count(*), videogame_id, videogames.name
+from reviews
+join videogames on videogame_id = videogames.id
+group by videogames.name, videogame_id, videogames.name
 
 --12- Selezionare la software house che ha vinto più premi tra il 2015 e il 2016 (software house id : 1)
 
