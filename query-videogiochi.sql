@@ -103,25 +103,64 @@ from reviews
 INNER JOIN players on player_id = players.id;
 
 --2- Sezionare tutti i videogame dei tornei tenuti nel 2016, mostrandoli una sola volta (226)
-Select distinct tournament_id, videogames.id
+Select distinct videogames.id, videogames.name
 from tournament_videogame
 INNER JOIN tournaments on tournament_id = tournaments.id
 INNER JOIN videogames on videogame_id = videogames.id
 where tournaments.[year] = 2016;
 
 --3- Mostrare le categorie di ogni videogioco (1718)
+select videogames.name, categories.name
+from category_videogame
+INNER JOIN categories on category_id = categories.id
+INNER JOIN videogames on videogame_id = videogames.id
 
 --4- Selezionare i dati di tutte le software house che hanno rilasciato almeno un gioco dopo il 2020, mostrandoli una sola volta (6)
+select software_houses.name,software_houses.country
+from videogames
+INNER JOIN software_houses on software_house_id = software_houses.id
+where YEAR(release_date) = 2020
+GROUP BY software_houses.name,software_houses.country;
 
 --5- Selezionare i premi ricevuti da ogni software house per i videogiochi che ha prodotto (55)
+Select videogames.name,awards.name, software_houses.name
+from award_videogame
+INNER JOIN awards on award_id = awards.id
+INNER JOIN videogames on videogame_id = videogames.id
+INNER JOIN software_houses on software_house_id = software_houses.id;
+
 
 --6- Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
+select *
+from videogames;
 
 --7- Selezionare quali giochi erano presenti nei tornei nei quali hanno partecipato i giocatori il cui nome inizia per 'S' (474)
+select distinct videogames.id, videogames.name
+from videogames
+INNER JOIN tournament_videogame on tournament_videogame.videogame_id = videogames.id
+INNER JOIN player_tournament on player_tournament.tournament_id = tournament_videogame.tournament_id
+INNER JOIN players on players.id = player_tournament.player_id
+where players.name like 'S%'
 
 --8- Selezionare le città in cui è stato giocato il gioco dell'anno del 2018 (36)
+select distinct tournaments.id, tournaments.name, tournaments.city
+from tournaments
+INNER JOIN tournament_videogame on tournament_videogame.tournament_id = tournaments.id
+INNER JOIN videogames on videogames.id = tournament_videogame.videogame_id
+INNER JOIN award_videogame on award_videogame.videogame_id = videogames.id
+INNER JOIN awards on awards.id = award_videogame.award_id
+where awards.name = 'Gioco dell''anno' and award_videogame.year = 2018
 
 --9- Selezionare i giocatori che hanno giocato al gioco più atteso del 2018 in un torneo del 2019 (3306)
+Select players.name, players.lastname
+from players
+INNER JOIN player_tournament on player_id = player_tournament.player_id
+INNER JOIN tournaments on player_tournament.tournament_id = tournaments.id
+INNER JOIN tournament_videogame on tournament_videogame.tournament_id = tournaments.id
+INNER JOIN videogames on tournament_videogame.videogame_id = videogames.id
+INNER JOIN award_videogame on videogames.id = award_videogame.videogame_id
+INNER JOIN awards on award_id = awards.id
+where tournaments.[year] = 2019 and award_videogame.[year] = 2018 and awards.[name] = 'Gioco più atteso';
 
 
 --*********** BONUS ***********
